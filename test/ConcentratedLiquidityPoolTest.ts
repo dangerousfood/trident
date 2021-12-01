@@ -71,33 +71,34 @@ describe("Concentrated Liquidity Product Pool", function () {
           recipient: defaultAddress,
         };
 
+        const results: { dy: BigNumber; dx: BigNumber; tokenId: BigNumber; liquidity: BigNumber }[] = [];
         // normal mint
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // same range mint, from bento
         addLiquidityParams.native = !addLiquidityParams.native;
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // normal mint, narrower range
         addLiquidityParams = helper.setTicks(lower + step / 2, upper - step / 2, addLiquidityParams);
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // mint on the same lower tick
         // @dev if a tick exists we dont' have to provide the tickOld param
         addLiquidityParams = helper.setTicks(lower, upper + step, addLiquidityParams);
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // mint on the same upper tick
         addLiquidityParams = helper.setTicks(lower - step, upper, addLiquidityParams);
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // mint below trading price
         addLiquidityParams = helper.setTicks(lower - 2 * step, upper - 2 * step, addLiquidityParams);
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
 
         // mint above trading price
         addLiquidityParams = helper.setTicks(lower + 2 * step, upper + 2 * step, addLiquidityParams);
-        await addLiquidityViaRouter(addLiquidityParams);
+        await addLiquidityViaRouter(addLiquidityParams).then((result) => results.push(result));
       }
     });
 
